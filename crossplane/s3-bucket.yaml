@@ -1,0 +1,12 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: my-crossplane-test-bucket-12345
+spec:
+  forProvider:
+    region: us-east-1
+    tags:
+      environment: development
+      managedBy: crossplane
+  providerConfigRef:
+    name: default

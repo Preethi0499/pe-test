@@ -1,0 +1,105 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ec2-instance
+  title: Create EC2 Instance
+  description: Provision an AWS EC2 Instance via Crossplane
+  tags:
+    - aws
+    - ec2
+    - crossplane
+spec:
+  owner: platform-team
+  type: infrastructure
+
+  parameters:
+    - title: EC2 Instance Details
+      required:
+        - instanceName
+        - instanceType
+        - region
+        - ami
+      properties:
+        instanceName:
+          title: Instance Name
+          type: string
+          description: Unique name for the EC2 instance
+          ui:autofocus: true
+
+        instanceType:
+          title: Instance Type
+          type: string
+          default: t2.micro
+          enum:
+            - t2.micro
+            - t2.small
+            - t2.medium
+            - t3.micro
+            - t3.small
+            - t3.medium
+          enumNames:
+            - t2.micro   (1 vCPU, 1GB RAM)
+            - t2.small   (1 vCPU, 2GB RAM)
+            - t2.medium  (2 vCPU, 4GB RAM)
+            - t3.micro   (2 vCPU, 1GB RAM)
+            - t3.small   (2 vCPU, 2GB RAM)
+            - t3.medium  (2 vCPU, 4GB RAM)
+
+        region:
+          title: AWS Region
+          type: string
+          default: us-east-1
+          enum:
+            - us-east-1
+            - us-west-2
+            - ap-south-1
+          enumNames:
+            - US East (N. Virginia)
+            - US West (Oregon)
+            - Asia Pacific (Mumbai)
+
+        ami:
+          title: AMI ID
+          type: string
+          description: Amazon Machine Image ID
+          default: ami-0c55b159cbfafe1f0
+
+        keyName:
+          title: Key Pair Name
+          type: string
+          description: SSH Key pair name (optional)
+
+        subnetId:
+          title: Subnet ID
+          type: string
+          description: Subnet ID to launch instance in (optional)
+
+  steps:
+    - id: create-manifest
+      name: Generate EC2 Claim
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          instanceName: ${{ parameters.instanceName }}
+          instanceType: ${{ parameters.instanceType }}
+          region: ${{ parameters.region }}
+          ami: ${{ parameters.ami }}
+          keyName: ${{ parameters.keyName }}
+          subnetId: ${{ parameters.subnetId }}
+
+    - id: apply-manifest
+      name: Apply to Cluster
+      action: kubernetes:apply
+      input:
+        namespaced: true
+        namespace: default
+        manifest: ${{ steps['create-manifest'].output.path }}/claim.yaml
+
+  output:
+    text:
+      - title: EC2 Instance
+        content: |
+          EC2 Instance `${{ parameters.instanceName }}` is being provisioned!
+          Type: ${{ parameters.instanceType }}
+          Region: ${{ parameters.region }}

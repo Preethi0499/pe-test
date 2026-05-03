@@ -1,0 +1,14 @@
+apiVersion: platform.example.com/v1alpha1
+kind: IAMRole
+metadata:
+  name: pe-test-role
+  namespace: default
+spec:
+  parameters:
+    roleName: pe-test-role
+    description: Managed by Crossplane
+    policyArns:
+      - arn:aws:iam::aws:policy/AdministratorAccess
+  compositeDeletePolicy: Background
+  writeConnectionSecretToRef:
+    name: pe-test-role-conn

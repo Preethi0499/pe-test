@@ -2,6 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
   name: platform-templates
+  description: Platform infrastructure templates
 spec:
   targets:
     - ./templates/ec2-instance/template.yaml
+    - ./templates/s3-bucket/template.yaml
+    - ./templates/iam-role/template.yaml

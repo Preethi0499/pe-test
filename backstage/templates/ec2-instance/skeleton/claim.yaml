@@ -1,0 +1,16 @@
+apiVersion: platform.example.com/v1alpha1
+kind: EC2Instance
+metadata:
+  name: ${{ values.instanceName }}
+  namespace: default
+spec:
+  parameters:
+    instanceName: ${{ values.instanceName }}
+    instanceType: ${{ values.instanceType }}
+    region: ${{ values.region }}
+    ami: ${{ values.ami }}
+    keyName: ${{ values.keyName }}
+    subnetId: ${{ values.subnetId }}
+  compositeDeletePolicy: Background
+  writeConnectionSecretToRef:
+    name: ${{ values.instanceName }}-conn

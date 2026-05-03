@@ -6,5 +6,5 @@ metadata:
 spec:
   targets:
     - ./templates/ec2-instance/template.yaml
-    - ./templates/s3-bucket-template.yaml
+    - ./templates/skeleton/s3-bucket-template.yaml
     - ./templates/iam-role/template.yaml

@@ -62,7 +62,7 @@ backstage:
         - allow: [Component, System, API, Resource, Location]
       locations:
         - type: url
-          target: https://github.com/YOUR_USERNAME/platform-engineering-demo/blob/main/backstage/catalog-info.yaml
+          target: https://github.com/Preethi0499/pe-test/blob/main/backstage/catalog-info.yaml
 
 postgresql:
   enabled: true

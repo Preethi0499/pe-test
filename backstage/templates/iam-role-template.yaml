@@ -34,7 +34,7 @@ spec:
             - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
             - "arn:aws:iam::aws:policy/ReadOnlyAccess"
           enumNames:
-            - Administrator Access (Full)
+            - Administrator Access
             - S3 Full Access
             - Read Only Access
 
@@ -43,7 +43,7 @@ spec:
       name: Generate IAM Role Claim
       action: fetch:template
       input:
-        url: ./skeleton
+        url: ./iam-role/skeleton        # 👈 correct relative path to skeleton
         values:
           roleName: ${{ parameters.roleName }}
           description: ${{ parameters.description }}
@@ -57,7 +57,7 @@ spec:
         title: "Create IAM Role: ${{ parameters.roleName }}"
         branchName: iam-${{ parameters.roleName }}
         description: "Provision IAM role via Crossplane"
-        targetPath: crossplane/claims
+        targetPath: crossplane/claims/iam   # 👈 dedicated folder
 
   output:
     links:

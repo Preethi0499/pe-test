@@ -1,0 +1,12 @@
+apiVersion: platform.example.com/v1alpha1
+kind: S3Bucket
+metadata:
+  name: 
+  namespace: default
+spec:
+  parameters:
+    bucketName: 
+    region: 
+  compositeDeletePolicy: Delete
+  writeConnectionSecretToRef:
+    name: -conn

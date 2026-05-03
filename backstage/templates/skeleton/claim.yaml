@@ -1,0 +1,12 @@
+apiVersion: platform.example.com/v1alpha1
+kind: S3Bucket
+metadata:
+  name: ${{ values.bucketName }}
+  namespace: default
+spec:
+  parameters:
+    bucketName: ${{ values.bucketName }}
+    region: ${{ values.region }}
+  compositeDeletePolicy: Delete
+  writeConnectionSecretToRef:
+    name: ${{ values.bucketName }}-conn

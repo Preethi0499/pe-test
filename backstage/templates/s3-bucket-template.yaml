@@ -1,0 +1,60 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: s3-bucket
+  title: Create S3 Bucket
+  description: Provision an AWS S3 bucket via Crossplane
+  tags:
+    - aws
+    - s3
+    - crossplane
+spec:
+  owner: platform-team
+  type: infrastructure
+
+  parameters:
+    - title: S3 Bucket Details
+      required:
+        - bucketName
+        - region
+      properties:
+        bucketName:
+          title: Bucket Name
+          type: string
+          description: Globally unique S3 bucket name
+        region:
+          title: AWS Region
+          type: string
+          default: us-east-1
+          enum:
+            - us-east-1
+            - us-west-2
+            - ap-south-1
+          enumNames:
+            - US East (N. Virginia)
+            - US West (Oregon)
+            - Asia Pacific (Mumbai)
+
+  steps:
+    - id: create-manifest
+      name: Generate S3 Claim
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          bucketName: ${{ parameters.bucketName }}
+          region: ${{ parameters.region }}
+
+    - id: publish
+      name: Push to GitHub
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=pe-test&owner=Preethi0499
+        title: "Create S3 Bucket: ${{ parameters.bucketName }}"
+        branchName: s3-${{ parameters.bucketName }}
+        description: "Provision S3 bucket via Crossplane"
+
+  output:
+    links:
+      - title: Pull Request
+        url: ${{ steps.publish.output.remoteUrl }}

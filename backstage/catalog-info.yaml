@@ -1,16 +1,7 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: Location
 metadata:
-  name: crossplane-s3-bucket
-  description: S3 Bucket provisioned by Crossplane on AWS
-  annotations:
-    backstage.io/kubernetes-id: my-crossplane-test-bucket-12345
-  tags:
-    - aws
-    - s3
-    - infrastructure
-    - crossplane
+  name: platform-templates
 spec:
-  type: infrastructure
-  lifecycle: production
-  owner: platform-team
+  targets:
+    - ./templates/ec2-instance/template.yaml

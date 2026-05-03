@@ -1,12 +1,12 @@
 apiVersion: platform.example.com/v1alpha1
 kind: S3Bucket
 metadata:
-  name: my-testing-from-ui-s3-pe
+  name: twyetgf-pe-test
   namespace: default
 spec:
   parameters:
-    bucketName: my-testing-from-ui-s3-pe
+    bucketName: twyetgf-pe-test
     region: us-east-1
   compositeDeletePolicy: Delete
   writeConnectionSecretToRef:
-    name: my-testing-from-ui-s3-pe-conn
+    name: twyetgf-pe-test-conn

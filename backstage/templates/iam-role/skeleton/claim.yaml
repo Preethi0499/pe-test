@@ -1,0 +1,14 @@
+apiVersion: platform.example.com/v1alpha1
+kind: IAMRole
+metadata:
+  name: ${{ values.roleName }}
+  namespace: default
+spec:
+  parameters:
+    roleName: ${{ values.roleName }}
+    description: ${{ values.description }}
+    policyArns:
+      - ${{ values.policyArn }}
+  compositeDeletePolicy: Background
+  writeConnectionSecretToRef:
+    name: ${{ values.roleName }}-conn

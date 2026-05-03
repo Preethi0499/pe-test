@@ -1,0 +1,65 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: iam-role
+  title: Create IAM Role
+  description: Provision an AWS IAM Role via Crossplane
+  tags:
+    - aws
+    - iam
+    - crossplane
+spec:
+  owner: platform-team
+  type: infrastructure
+
+  parameters:
+    - title: IAM Role Details
+      required:
+        - roleName
+      properties:
+        roleName:
+          title: Role Name
+          type: string
+          description: Unique name for the IAM role
+        description:
+          title: Description
+          type: string
+          default: "Managed by Crossplane"
+        policyArn:
+          title: Policy ARN
+          type: string
+          default: "arn:aws:iam::aws:policy/AdministratorAccess"
+          enum:
+            - "arn:aws:iam::aws:policy/AdministratorAccess"
+            - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+            - "arn:aws:iam::aws:policy/ReadOnlyAccess"
+          enumNames:
+            - Administrator Access (Full)
+            - S3 Full Access
+            - Read Only Access
+
+  steps:
+    - id: create-manifest
+      name: Generate IAM Role Claim
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          roleName: ${{ parameters.roleName }}
+          description: ${{ parameters.description }}
+          policyArn: ${{ parameters.policyArn }}
+
+    - id: publish
+      name: Push to GitHub
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=pe-test&owner=Preethi0499
+        title: "Create IAM Role: ${{ parameters.roleName }}"
+        branchName: iam-${{ parameters.roleName }}
+        description: "Provision IAM role via Crossplane"
+        targetPath: crossplane/claims
+
+  output:
+    links:
+      - title: Pull Request
+        url: ${{ steps.publish.output.remoteUrl }}

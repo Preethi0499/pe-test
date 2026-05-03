@@ -1,0 +1,51 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xec2instances.platform.example.com
+spec:
+  group: platform.example.com
+  names:
+    kind: XEC2Instance
+    plural: xec2instances
+  claimNames:
+    kind: EC2Instance
+    plural: ec2instances
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                required:
+                  - instanceName
+                  - instanceType
+                  - region
+                  - ami
+                properties:
+                  instanceName:
+                    type: string
+                    description: Name tag for the EC2 instance
+                  instanceType:
+                    type: string
+                    description: EC2 instance type
+                    default: t2.micro
+                  region:
+                    type: string
+                    description: AWS region
+                    default: us-east-1
+                  ami:
+                    type: string
+                    description: AMI ID
+                  keyName:
+                    type: string
+                    description: SSH key pair name
+                  subnetId:
+                    type: string
+                    description: Subnet ID to launch instance in

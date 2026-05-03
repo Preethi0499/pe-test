@@ -1,0 +1,12 @@
+apiVersion: platform.example.com/v1alpha1
+kind: S3Bucket
+metadata:
+  name: my-testing-from-ui-s3-pe
+  namespace: default
+spec:
+  parameters:
+    bucketName: my-testing-from-ui-s3-pe
+    region: us-east-1
+  compositeDeletePolicy: Delete
+  writeConnectionSecretToRef:
+    name: my-testing-from-ui-s3-pe-conn

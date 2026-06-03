@@ -6,3 +6,15 @@ metadata:
 spec:
   targets:
     - ./templates/ec2-instance/template.yaml
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pe-test
+  description: PE Test onboarding service
+  annotations:
+    github.com/project-slug: Preethi0499/pe-test
+spec:
+  type: service
+  lifecycle: development
+  owner: team-platform

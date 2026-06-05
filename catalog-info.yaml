@@ -5,6 +5,7 @@ metadata:
   description: s3 service provisioned by Terragrunt
   annotations:
     github.com/project-slug: Preethi0499/pe-test
+    backstage.io/techdocs-ref: README.md
 spec:
   type: service
   lifecycle: development
